@@ -1,0 +1,108 @@
+import Foundation
+
+struct ClassicMotorbikes {
+    var name: String
+    var mark: Int
+}
+
+extension ClassicMotorbikes: CustomStringConvertible {
+    var description : String {
+        return "Name: \(name), Mark: \(mark)"
+    }
+}
+
+
+struct queue <T> {
+    private var elements: [T] = []
+    
+    public var isEmpty: Bool {
+        return elements.count == 0
+    }
+    
+    mutating func enqueue(element: T) {
+        elements.append(element)
+    }
+    mutating func dequeue()->T {
+        return elements.removeLast()
+    }
+    
+    public var head: T? {
+        if isEmpty {
+            print("The elemnets aren't found. Array is empty.")
+            return nil
+        } else {
+            print("Last element is \(elements.last!)")
+            return elements.last
+        }
+    }
+    
+    public var front: T? {
+        if isEmpty {
+            print("The elemnets aren't found. Array is empty.")
+            return nil
+        } else {
+            print("First element is \(elements.first!)")
+            return elements.first
+        }
+    }
+    
+    func printMyQueue() {
+        print(elements)
+    }
+}
+
+extension queue {
+    func myFilter(predicate:(T) -> Bool) -> [T] {
+        var result = [T]()
+        for i in elements {
+            if predicate(i) {
+                result.append(i)
+            }
+        }
+        return result
+    }
+}
+
+var pupil = queue<ClassicMotorbikes>()
+pupil.enqueue(element: .init(name: "Harley Davidson", mark: 7))
+pupil.enqueue(element: .init(name: "Triumph", mark: 2))
+pupil.enqueue(element: .init(name: "Indian", mark: 2))
+
+
+pupil.printMyQueue()
+pupil.head
+pupil.front
+
+let honoursPupil = pupil.myFilter(predicate: {$0.mark == 2})
+print(honoursPupil)
+
+struct Motorbike {
+    var name: String
+}
+
+struct Store {
+    var models: [Motorbike]
+}
+
+var motorbikes = [
+    Motorbike(name: "Yamaha"),
+    Motorbike(name: "Ducati"),
+    Motorbike(name: "Honda")
+]
+var store = Store(models: motorbikes)
+
+var namesMapShort = store.models.map({$0.name})
+print(namesMapShort)
+
+let namesMapLong = store.models.map({ (motorbike) -> String in
+    return motorbike.name
+})
+print(namesMapLong)
+
+var namesFilterShort = store.models.filter({$0.name == "Yamaha"})
+print(namesFilterShort)
+
+let namesFilterLong = store.models.filter({ (motorbike) -> Bool in
+    return motorbike.name == "Yamaha"
+})
+print(namesFilterLong)
